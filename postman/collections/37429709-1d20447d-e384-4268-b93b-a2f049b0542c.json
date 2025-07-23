@@ -7,134 +7,6 @@
 	},
 	"item": [
 		{
-			"name": "login",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "1980256c-bb5c-486b-a472-f63e22b62424",
-						"exec": [
-							"let jsonData = pm.response.json();",
-							"pm.environment.set('token', jsonData.id_token)",
-							"",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.expect(pm.response.code).to.eql(200);",
-							"});",
-							"",
-							"pm.test(\"Status code is OK\", function () {",
-							"    pm.expect(pm.response.status).to.eql(\"OK\");",
-							"});",
-							"",
-							"pm.test(\"Body contains text 'id_token'\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"id_token\");",
-							"});",
-							"",
-							"pm.test(\"'Content-Type' header is present\", function () {",
-							"    pm.expect(pm.response.headers.has(\"Content-Type\")).to.be.true;",
-							"});",
-							"",
-							"pm.test(\"'Content-Security-Policy' header is present\", function () {",
-							"    pm.expect(pm.response.headers.has(\"Content-Security-Policy\")).to.be.true;",
-							"});",
-							"",
-							"pm.test(\"'Cache-Control' header is present\", function () {",
-							"    pm.expect(pm.response.headers.has(\"Cache-Control\")).to.be.true;",
-							"});",
-							"",
-							"let moment = require('moment');",
-							"let expectedDate = moment().utc().seconds(0).milliseconds(0).format('ddd, DD MMM YYYY HH:mm');",
-							"let actualDateHeader = pm.response.headers.get('Date');",
-							"let actualDate = moment.utc(actualDateHeader).seconds(0).milliseconds(0).format('ddd, DD MMM YYYY HH:mm');",
-							"pm.test(\"The date in the header matches the current UTC date\", function () {",
-							"    pm.expect(actualDate).to.eql(expectedDate);",
-							"});",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"id": "8afa87e3-8f41-4737-afe0-4af4817cb8a9",
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"auth": {
-					"type": "noauth"
-				},
-				"method": "POST",
-				"header": [
-					{
-						"key": "Accept",
-						"value": "application/json, text/plain, */*"
-					},
-					{
-						"key": "Accept-Language",
-						"value": "en-US,en;q=0.9,it-IT;q=0.8,it;q=0.7,fr-FR;q=0.6,fr;q=0.5,de-DE;q=0.4,de;q=0.3,ru;q=0.2"
-					},
-					{
-						"key": "Connection",
-						"value": "keep-alive"
-					},
-					{
-						"key": "Content-Type",
-						"value": "application/json"
-					},
-					{
-						"key": "Origin",
-						"value": "https://sqlverifier-50d286d70656.herokuapp.com"
-					},
-					{
-						"key": "Referer",
-						"value": "https://sqlverifier-50d286d70656.herokuapp.com/login"
-					},
-					{
-						"key": "Sec-Fetch-Dest",
-						"value": "empty"
-					},
-					{
-						"key": "Sec-Fetch-Mode",
-						"value": "cors"
-					},
-					{
-						"key": "Sec-Fetch-Site",
-						"value": "same-origin"
-					},
-					{
-						"key": "User-Agent",
-						"value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
-					},
-					{
-						"key": "sec-ch-ua",
-						"value": "\"Google Chrome\";v=\"119\", \"Chromium\";v=\"119\", \"Not?A_Brand\";v=\"24\""
-					},
-					{
-						"key": "sec-ch-ua-mobile",
-						"value": "?0"
-					},
-					{
-						"key": "sec-ch-ua-platform",
-						"value": "\"macOS\""
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"username\":\"{{adminLogin}}\",\"password\":\"{{adminPassword}}\",\"rememberMe\":false}"
-				},
-				"url": {
-					"raw": "{{baseUrl}}/authenticate",
-					"host": [
-						"{{baseUrl}}"
-					],
-					"path": [
-						"authenticate"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "create a task",
 			"event": [
 				{
@@ -175,6 +47,52 @@
 							"let actualDate = moment.utc(actualDateHeader).seconds(0).milliseconds(0).format('ddd, DD MMM YYYY HH:mm');",
 							"pm.test(\"The date in the header matches the current UTC date\", function () {",
 							"    pm.expect(actualDate).to.eql(expectedDate);",
+							"});",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "c3d6d528-e011-4de4-9827-4b3b7300092a",
+						"exec": [
+							"pm.sendRequest({",
+							"    url: 'http://localhost:8080/api/authenticate',",
+							"    method: 'POST',",
+							"    header: {",
+							"        'Accept': 'application/json, text/plain, */*',",
+							"        'Accept-Language': 'en-US,en;q=0.9,it-IT;q=0.8,it;q=0.7,fr-FR;q=0.6,fr;q=0.5,de-DE;q=0.4,de;q=0.3,ru;q=0.2',",
+							"        'Connection': 'keep-alive',",
+							"        'Content-Type': 'application/json',",
+							"        'Origin': 'https://sqlverifier-50d286d70656.herokuapp.com',",
+							"        'Referer': 'https://sqlverifier-50d286d70656.herokuapp.com/login',",
+							"        'Sec-Fetch-Dest': 'empty',",
+							"        'Sec-Fetch-Mode': 'cors',",
+							"        'Sec-Fetch-Site': 'same-origin',",
+							"        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',",
+							"        'sec-ch-ua': '\"Google Chrome\";v=\"119\", \"Chromium\";v=\"119\", \"Not?A_Brand\";v=\"24\"',",
+							"        'sec-ch-ua-mobile': '?0',",
+							"        'sec-ch-ua-platform': '\"macOS\"'",
+							"    },",
+							"    body: {",
+							"        mode: 'raw',",
+							"        raw: JSON.stringify({",
+							"            username: 'adminNew1',",
+							"            password: 'adminNew1',",
+							"            rememberMe: false",
+							"        })",
+							"    }",
+							"}, function (err, res) {",
+							"    if (!err) {",
+							"        let jsonData = res.json();",
+							"        if (jsonData.id_token) {",
+							"            pm.environment.set('token', jsonData.id_token);",
+							"        }",
+							"    }",
 							"});",
 							"",
 							""
@@ -408,17 +326,6 @@
 					"script": {
 						"id": "04576ada-6c4a-48a4-9fb5-282d369b365f",
 						"exec": [
-							"// pm.sendRequest(",
-							"//     {url: 'http://localhost:8080/api/tasks/3070',",
-							"//     method: 'DELETE',",
-							"//     header:",
-							"//     {'Authorization': 'Bearer ' + pm.environment.get('token'),",
-							"//     'accept': '*/*'}",
-							"//     }",
-							"//     , function (err, response) {",
-							"//     console.log(response);",
-							"// });",
-							"",
 							"let jsonData = pm.response.json();",
 							"",
 							"pm.test(\"Status code is 200\", function () {",
@@ -453,10 +360,41 @@
 							"    pm.expect(actualDate).to.eql(expectedDate);",
 							"});",
 							"",
-							""
+							"",
+							"const taskId = pm.response.json().id;",
+							"",
+							"if (taskId) {",
+							"    pm.sendRequest({",
+							"        url: `http://localhost:8080/api/tasks/${taskId}`,",
+							"        method: 'DELETE',",
+							"        header: {",
+							"            'Authorization': `Bearer ${pm.environment.get('token')}`,",
+							"            'Accept': '*/*'",
+							"        }",
+							"    }, function (err, res) {",
+							"        if (err || res.code !== 204) {",
+							"            throw new Error(\"Failed to delete task with ID: \" + taskId);",
+							"        }",
+							"    });",
+							"} else {",
+							"    throw new Error(\"No task ID found in response, cannot delete.\");",
+							"}",
+							"",
+							"",
+							"",
+							"",
+							"pm.environment.unset(\"token\");",
+							"pm.environment.unset(\"task_id\");"
 						],
 						"type": "text/javascript",
 						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
 					}
 				}
 			],
