@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "37429709-1d20447d-e384-4268-b93b-a2f049b0542c",
+		"_postman_id": "ea5ecd61-122c-49a4-aca6-f9f779e22239",
 		"name": "changeTask 7.1",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_uid": "37429709-ea5ecd61-122c-49a4-aca6-f9f779e22239"
 	},
 	"item": [
 		{
@@ -11,16 +12,42 @@
 				{
 					"listen": "test",
 					"script": {
+						"id": "1980256c-bb5c-486b-a472-f63e22b62424",
 						"exec": [
 							"let jsonData = pm.response.json();",
-							"pm.environment.set('token', jsonData.id_token)"
+							"pm.environment.set('token', jsonData.id_token)",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Status code is OK\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"pm.test(\"Body contains text 'id_token'\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"id_token\");",
+							"});",
+							"",
+							"pm.test(\"'Content-Type' header is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"'Content-Security-Policy' header is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Security-Policy\");",
+							"});",
+							"",
+							"pm.test(\"'Cache-Control' header is present\", function () {",
+							"    pm.response.to.have.header(\"Cache-Control\");",
+							"});",
+							""
 						],
 						"type": "text/javascript",
-						"id": "2167984a-6021-44a7-a055-bbb70b92601f"
+						"packages": {}
 					}
 				}
 			],
-			"id": "37429709-13ec1d8a-39dd-4fe7-93bf-709e4a3cedd7",
+			"id": "8afa87e3-8f41-4737-afe0-4af4817cb8a9",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -105,24 +132,44 @@
 				{
 					"listen": "test",
 					"script": {
+						"id": "5813e8b1-8eea-40e6-9b01-4e6445b0858e",
 						"exec": [
 							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"task_id\", jsonData.id)",
 							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
 							"",
-							"pm.test(\"Your test name\", function () {",
+							"pm.test(\"Status code is Created\", function () {",
+							"    pm.response.to.have.status(\"Created\");",
+							"});",
+							"",
+							"pm.test(\"Responce contains text field with text 'some text'\", function () {",
 							"    pm.expect(jsonData.text).to.eql(\"some text\");",
 							"});",
 							"",
-							"pm.environment.set(\"task_id\", jsonData.id)",
+							"pm.test(\"'Content-Type' header is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"'Content-Security-Policy' header is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Security-Policy\");",
+							"});",
+							"",
+							"pm.test(\"'Referrer-Policy' header is present\", function () {",
+							"    pm.response.to.have.header(\"Referrer-Policy\");",
+							"});",
+							"",
 							"",
 							""
 						],
 						"type": "text/javascript",
-						"id": "58f3a193-d2c5-470b-aa06-4d378a649c18"
+						"packages": {}
 					}
 				}
 			],
-			"id": "37429709-c702ce68-68fc-4768-9ef0-f79a2b38db44",
+			"id": "25ed99f3-1c58-4ee1-b85d-1c6ea11523fc",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -160,7 +207,56 @@
 		},
 		{
 			"name": "get tasks list",
-			"id": "37429709-92a6f0be-440a-4ec3-b315-9bc4457fa240",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fef203c2-7ad3-4ee0-83e3-da56f074ec80",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Status code is OK\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"pm.test(\"Response is an array\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    pm.expect(Array.isArray(jsonData)).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Each item has required fields\", function () {",
+							"    const jsonData = pm.response.json();",
+							"    jsonData.forEach((item, index) => {",
+							"        pm.expect(item).to.have.property(\"id\");",
+							"        pm.expect(item).to.have.property(\"text\");",
+							"        pm.expect(item).to.have.property(\"answer\");",
+							"        pm.expect(item).to.have.property(\"title\");",
+							"    });",
+							"});",
+							"",
+							"pm.test(\"'Content-Type' header is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"'Content-Security-Policy' header is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Security-Policy\");",
+							"});",
+							"",
+							"pm.test(\"'Permissions-Policy' header is present\", function () {",
+							"    pm.response.to.have.header(\"Permissions-Policy\");",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "987877db-f0dd-4fa3-8853-f1a757f0f46f",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -200,7 +296,48 @@
 		},
 		{
 			"name": "change task text",
-			"id": "37429709-6fb0e1da-47b7-4c8b-b0c0-1b1ddfaf3519",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "176a7409-2dbe-49b5-8405-352a5f740cec",
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"pm.environment.set(\"task_id\", jsonData.id)",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Status code is OK\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"pm.test(\"Responce contains text field with text 'some new new text'\", function () {",
+							"    pm.expect(jsonData.text).to.eql(\"some new new text\");",
+							"});",
+							"",
+							"pm.test(\"'Content-Type' header is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"'Content-Security-Policy' header is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Security-Policy\");",
+							"});",
+							"",
+							"pm.test(\"'Referrer-Policy' header is present\", function () {",
+							"    pm.response.to.have.header(\"Referrer-Policy\");",
+							"});",
+							"",
+							"",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"id": "1ec3ab35-f393-4516-967b-dcad5d1b7e69",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -243,25 +380,54 @@
 				{
 					"listen": "test",
 					"script": {
+						"id": "04576ada-6c4a-48a4-9fb5-282d369b365f",
 						"exec": [
-							"pm.sendRequest(",
-							"    {url: 'https://sqlverifier-50d286d70656.herokuapp.com/api/tasks/3070',",
-							"    method: 'DELETE',",
-							"    header:",
-							"    {'Authorization': 'Bearer ' + pm.environment.get('token'),",
-							"    'accept': '*/*'}",
-							"    }",
-							"    , function (err, response) {",
-							"    console.log(response);",
+							"// pm.sendRequest(",
+							"//     {url: 'http://localhost:8080/api/tasks/3070',",
+							"//     method: 'DELETE',",
+							"//     header:",
+							"//     {'Authorization': 'Bearer ' + pm.environment.get('token'),",
+							"//     'accept': '*/*'}",
+							"//     }",
+							"//     , function (err, response) {",
+							"//     console.log(response);",
+							"// });",
+							"",
+							"let jsonData = pm.response.json();",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
 							"});",
+							"",
+							"pm.test(\"Status code is OK\", function () {",
+							"    pm.response.to.have.status(\"OK\");",
+							"});",
+							"",
+							"pm.test(\"Response contains correct task_id\", function () {",
+							"    pm.expect(jsonData.id).to.eql(Number(pm.variables.get(\"task_id\")));",
+							"});",
+							"",
+							"pm.test(\"'Content-Type' header is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Type\");",
+							"});",
+							"",
+							"pm.test(\"'Content-Security-Policy' header is present\", function () {",
+							"    pm.response.to.have.header(\"Content-Security-Policy\");",
+							"});",
+							"",
+							"pm.test(\"'Referrer-Policy' header is present\", function () {",
+							"    pm.response.to.have.header(\"Referrer-Policy\");",
+							"});",
+							"",
+							"",
 							""
 						],
 						"type": "text/javascript",
-						"id": "a5392541-5bda-44ae-aee3-452255778f47"
+						"packages": {}
 					}
 				}
 			],
-			"id": "37429709-fe65f1b7-f574-4adc-9333-de1c7d88aea4",
+			"id": "ff2089f3-3a91-4790-9108-b2dbc228d8a9",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -309,7 +475,7 @@
 				"exec": [
 					""
 				],
-				"id": "ce0b8a58-10a2-4555-a0fa-0d81cec94dab"
+				"id": "d0547d27-26c7-49de-82de-b9fdc837aa5e"
 			}
 		},
 		{
@@ -319,7 +485,7 @@
 				"exec": [
 					""
 				],
-				"id": "bf7f62df-922a-4ece-91f9-912a3191188a"
+				"id": "ca164fcf-dfb1-43a3-a7df-f6ed46cfda83"
 			}
 		}
 	]
